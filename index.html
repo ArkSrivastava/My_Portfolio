@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Ark Srivastava - CS Student & Web Developer</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+    
+    <div class="loading-screen">
+        <div class="loader">
+            <span class="loader-text">Loading</span>
+            <div class="loader-bar"></div>
+        </div>
+    </div>
+    
+    <div class="scroll-progress"></div>
+    
+    <div class="scroll-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div class="section-indicator" id="sectionIndicator"></div>
+    
+    <div class="content">
+        <header>
+            <nav>
+                <div class="logo">Ark Srivastava</div>
+                <ul class="nav-links">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#skills">Skills</a></li>
+                    <li><a href="#projects">Projects</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+                <div class="theme-switch">
+                    <i class="fas fa-moon"></i>
+                </div>
+                <div class="hamburger">
+                    <div class="line"></div>
+                    <div class="line"></div>
+                    <div class="line"></div>
+                </div>
+            </nav>
+        </header>
+
+        <section id="home" class="section active parallax-bg">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="glitch reveal-scale" data-text="< Hello, I'm Ark Srivastava />">< Hello, I'm Ark Srivastava /></h1>
+                    <h2 class="reveal delay-1">Computer Science Student & <span class="typing-text">Web Developer</span></h2>
+                    <p class="reveal delay-2">I build creative digital experiences with code</p>
+                    <div class="cta-buttons reveal delay-3">
+                        <a href="#projects" class="btn primary-btn">View My Work</a>
+                        <a href="#contact" class="btn secondary-btn">Contact Me</a>
+                    </div>
+                    <div class="social-icons reveal delay-4">
+                        <a href="https://github.com/ArkSrivastava" target="_blank"><i class="fab fa-github"></i></a>
+                        <a href="linkedin.com/in/ark-srivastava-3517ba1b6" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-title reveal">About Me</h2>
+                <div class="about-content">
+                    <div class="about-text reveal-left">
+                        <p>I'm a detail-oriented Computer Science student with internship experience at CodeAlpha and CodeSoft. Skilled in building responsive web apps using HTML, CSS, JavaScript, Next.js, and Spring Boot. Strong foundation in Java and Data Structures & Algorithms.</p>
+                        <p>Passionate about full-stack development, clean code, and continuous learning. Effective team player with a proactive mindset.</p>
+                        <p>When I'm not coding, you can find me solving algorithmic problems and exploring new technologies.</p>
+                        <p>My journey in tech began with curiosity about how websites work, which led me to explore various programming languages and frameworks. I'm constantly learning and experimenting with new technologies to expand my skill set.</p>
+                        <div class="about-details reveal delay-1">
+                            <div class="detail">
+                                <span class="label">Age:</span>
+                                <span class="value">21</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Email:</span>
+                                <span class="value">hi.arksrivastava@gmail.com</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Location:</span>
+                                <span class="value">New Delhi, India</span>
+                            </div>
+                            <div class="detail">
+                                <span class="label">Education:</span>
+                                <span class="value">B.Tech Computer Science, Galgotias University</span>
+                            </div>
+                        </div>
+                        <a href="resume.pdf" class="btn primary-btn reveal delay-2" download>Download Resume</a>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <div class="container">
+                <h2 class="section-title reveal">My Skills</h2>
+                <div class="skills-container reveal">
+                    <div class="skills-category">
+                        <h3>Frontend Development</h3>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fab fa-html5"></i></div>
+                                <h4>HTML5</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 95%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fab fa-css3-alt"></i></div>
+                                <h4>CSS3</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fab fa-js"></i></div>
+                                <h4>JavaScript</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fab fa-react"></i></div>
+                                <h4>React</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 80%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-category">
+                        <h3>Backend Development</h3>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fab fa-node-js"></i></div>
+                                <h4>Node.js</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fas fa-database"></i></div>
+                                <h4>MongoDB</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fas fa-server"></i></div>
+                                <h4>Express</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 75%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fas fa-database"></i></div>
+                                <h4>SQL</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 65%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skills-category">
+                        <h3>Other Skills</h3>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fab fa-git-alt"></i></div>
+                                <h4>Git</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fas fa-mobile-alt"></i></div>
+                                <h4>Responsive Design</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 90%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fas fa-cubes"></i></div>
+                                <h4>Three.js</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 70%;"></div>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon"><i class="fas fa-code-branch"></i></div>
+                                <h4>Problem Solving</h4>
+                                <div class="skill-bar">
+                                    <div class="skill-level" style="width: 85%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <div class="container">
+                <h2 class="section-title reveal">My Projects</h2>
+                <div class="projects-filter reveal delay-1">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="web">Web</button>
+                    <button class="filter-btn" data-filter="app">App</button>
+                    <button class="filter-btn" data-filter="other">Other</button>
+                </div>
+                <div class="projects-grid reveal delay-2">
+                    <div class="project-card reveal-scale" data-category="web">
+                        <div class="project-image">
+                            <img src="img/project1.jpg" alt="Project 1">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://ecommerce-demo.arksrivastava.com" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                                    <a href="https://github.com/ark-srivastava/ecommerce-project" class="project-link" target="_blank"><i class="fab fa-github"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">E-Commerce Website</h3>
+                            <p class="project-description">A full-stack e-commerce platform with user authentication, product catalog, and payment integration.</p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>Node.js</span>
+                                <span>MongoDB</span>
+                                <span>Express</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card" data-category="web">
+                        <div class="project-image">
+                            <img src="img/project2.jpg" alt="Project 2">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://github.com/ArkSrivastava/Daily_Check.git" class="project-link" target="_blank"><i class="fab fa-github"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Daily Check Website</h3>
+                            <p class="project-description">A productivity website for managing tasks, Setting alarms, and deadlines with real-time updates.</p>
+                            <div class="project-tech">
+                                <span>HTML5</span>
+                                <span>Javascript</span>
+                                <span>Css</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card" data-category="web">
+                        <div class="project-image">
+                            <img src="img/project3.jpg" alt="Project 3">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://portfolio-demo.arksrivastava.com" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                                    <a href="https://github.com/ark-srivastava/portfolio" class="project-link" target="_blank"><i class="fab fa-github"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">3D Portfolio Website</h3>
+                            <p class="project-description">An interactive portfolio website with 3D elements and animations using Three.js.</p>
+                            <div class="project-tech">
+                                <span>HTML5</span>
+                                <span>CSS3</span>
+                                <span>JavaScript</span>
+                                <span>Three.js</span>
+                            </div>
+                        </div>
+                    </div>               
+                    <div class="project-card" data-category="web">
+                        <div class="project-image">
+                            <img src="img/project4.jpg" alt="Project 5">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <!--<a href="https://chat-demo.arksrivastava.com" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>-->
+                                    <a href="https://github.com/ArkSrivastava/Live_Chat_App.git" class="project-link" target="_blank"><i class="fab fa-github"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Live Chat Application</h3>
+                            <p class="project-description">Real-time chat app with typing indicators, user presence, and instant messaging. Enhanced smooth UX, scalability, and socket-based communication.</p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>WebSockets</span>
+                                <span>Node.js</span>
+                                <span>CSS</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card" data-category="Web">
+                        <div class="project-image">
+                            <img src="img/project6.jpg" alt="Project 6">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://route-planner.arksrivastava.com" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                                    <a href="https://github.com/ark-srivastava/route-planner" class="project-link" target="_blank"><i class="fab fa-github"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">Smart Route Planner</h3>
+                            <p class="project-description">Efficient path finding app using algorithms like Dijkstra, A*, BFS, and DFS. Provides optimized routes with real-time updates and intuitive user interface.</p>
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                                <span>Algorithms</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card" data-category="other">
+                        <div class="project-image">
+                            <img src="img/project7.jpg" alt="Project 7">
+                            <div class="project-overlay">
+                                <div class="project-links">
+                                    <a href="https://finance-planner.arksrivastava.com" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i></a>
+                                    <a href="https://github.com/ark-srivastava/finance-planner" class="project-link" target="_blank"><i class="fab fa-github"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="project-info">
+                            <h3 class="project-title">AI-Powered Finance Planner</h3>
+                            <p class="project-description">Interactive dashboard with AI-based expense categorization and spending insights. Features data visualization, user authentication, and automated budget profile builder.</p>
+                            <div class="project-tech">
+                                <span>Python</span>
+                                <span>Machine Learning</span>
+                                <span>JavaScript</span>
+                                <span>React</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="container">
+                <h2 class="section-title reveal">Get In Touch</h2>
+                <div class="contact-content">
+                    <div class="contact-info reveal-left">
+                        <div class="contact-item reveal delay-1">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h3>Location</h3>
+                                <p>Lucknow, Uttar Pradesh, India</p>
+                            </div>
+                        </div>
+                        <div class="contact-item reveal delay-2">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h3>Email</h3>
+                                <p>hi.arksrivastava@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="contact-item reveal delay-3">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h3>Phone</h3>
+                                <p>+91 9876543210</p>
+                            </div>
+                        </div>
+                        <div class="social-links reveal delay-4">
+                            <a href="https://github.com/ArkSrivastava" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i></a>
+                            <a href="https://linkedin.com/in/ark-srivastava-3517ba1b6" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i></a>
+                            <a href="mailto:hi.arksrivastava@gmail.com"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                    <div class="contact-form reveal-right">
+                        <form id="contactForm">
+                            <div class="form-group reveal delay-1">
+                                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                                <label for="name">Your Name</label>
+                            </div>
+                            <div class="form-group reveal delay-2">
+                                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                                <label for="email">Your Email</label>
+                            </div>
+                            <div class="form-group reveal delay-3">
+                                <input type="text" id="subject" name="subject" placeholder="Subject" required>
+                                <label for="subject">Subject</label>
+                            </div>
+                            <div class="form-group reveal delay-4">
+                                <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+                                <label for="message">Your Message</label>
+                            </div>
+                            <button type="submit" class="btn primary-btn reveal delay-5">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="logo reveal">
+                        <h1>Ark Srivastava</h1>
+                    </div>
+                    <p class="reveal delay-1">Computer Science Student & Web Developer</p>
+                    <p class="reveal delay-2">&copy; 2025 Ark Srivastava. All Rights Reserved.</p>
+                    <div class="back-to-top reveal-scale delay-3">
+                        <a href="#home"><i class="fas fa-arrow-up"></i></a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

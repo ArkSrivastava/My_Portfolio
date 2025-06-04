@@ -1,0 +1,10 @@
+This folder contains image files for the portfolio website.
+
+Required images:
+- profile.jpg (your profile picture, ideally square format)
+- project1.jpg (screenshot of your first project)
+- project2.jpg (screenshot of your second project)
+- project3.jpg (screenshot of your third project)
+- project4.jpg (screenshot of your fourth project)
+
+Replace these placeholder images with your actual images.
