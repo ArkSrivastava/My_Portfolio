@@ -1,9 +1,132 @@
-// Wait for the DOM to be fully loaded
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
     // Initialize the 3D background
     initThreeJS();
     
-    // Initialize the navigation
+    // Loading screen
+    setTimeout(function() {
+        document.querySelector('.loading-screen').style.opacity = '0';
+        setTimeout(function() {
+            document.querySelector('.loading-screen').style.display = 'none';
+        }, 500);
+    }, 1500);
+    
+    // Custom cursor
+    const cursor = document.querySelector('.custom-cursor');
+    const cursorFollower = document.querySelector('.custom-cursor-follower');
+    
+    document.addEventListener('mousemove', function(e) {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        
+        setTimeout(function() {
+            cursorFollower.style.left = e.clientX + 'px';
+            cursorFollower.style.top = e.clientY + 'px';
+        }, 100);
+    });
+    
+    // Cursor effects on interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, .theme-switch, .scroll-to-top, input, textarea, .project-card, .skill-item');
+    
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', function() {
+            cursor.style.width = '30px';
+            cursor.style.height = '30px';
+            cursor.style.backgroundColor = 'rgba(var(--primary-color-rgb), 0.5)';
+            cursorFollower.style.width = '50px';
+            cursorFollower.style.height = '50px';
+        });
+        
+        element.addEventListener('mouseleave', function() {
+            cursor.style.width = '20px';
+            cursor.style.height = '20px';
+            cursor.style.backgroundColor = 'rgba(var(--primary-color-rgb), 0.3)';
+            cursorFollower.style.width = '40px';
+            cursorFollower.style.height = '40px';
+        });
+    });
+    
+    // Theme switcher
+    const themeSwitch = document.querySelector('.theme-switch');
+    const themeIcon = themeSwitch.querySelector('i');
+    
+    themeSwitch.addEventListener('click', function() {
+        document.body.classList.toggle('light-theme');
+        
+        if (document.body.classList.contains('light-theme')) {
+            themeIcon.classList.remove('fa-moon');
+            themeIcon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'light');
+        } else {
+            themeIcon.classList.remove('fa-sun');
+            themeIcon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'dark');
+        }
+    });
+    
+    // Check for saved theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+    }
+    
+    // Scroll to top button
+    const scrollToTopBtn = document.querySelector('.scroll-to-top');
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 300) {
+            scrollToTopBtn.classList.add('visible');
+        } else {
+            scrollToTopBtn.classList.remove('visible');
+        }
+    });
+    
+    scrollToTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+    
+    // Typing animation
+    const typingElement = document.querySelector('.typing-text');
+    const words = ['Web Developer', 'UI/UX Designer', 'Problem Solver', 'Tech Enthusiast'];
+    let wordIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let typingSpeed = 100;
+    
+    function typeEffect() {
+        const currentWord = words[wordIndex];
+        
+        if (isDeleting) {
+            typingElement.textContent = currentWord.substring(0, charIndex - 1);
+            charIndex--;
+            typingSpeed = 50;
+        } else {
+            typingElement.textContent = currentWord.substring(0, charIndex + 1);
+            charIndex++;
+            typingSpeed = 150;
+        }
+        
+        if (!isDeleting && charIndex === currentWord.length) {
+            isDeleting = true;
+            typingSpeed = 1000; // Pause at end of word
+        } else if (isDeleting && charIndex === 0) {
+            isDeleting = false;
+            wordIndex = (wordIndex + 1) % words.length;
+            typingSpeed = 500; // Pause before typing next word
+        }
+        
+        setTimeout(typeEffect, typingSpeed);
+    }
+    
+    if (typingElement) {
+        setTimeout(typeEffect, 1000); // Start after a delay
+    }
+    
+    // Initialize navigation
     initNavigation();
     
     // Initialize the projects filter
@@ -18,18 +141,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize scroll progress indicator
     initScrollProgress();
     
-    // Hide loading screen after everything is loaded
-    window.addEventListener('load', () => {
-        setTimeout(() => {
-            document.querySelector('.loading-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.querySelector('.loading-screen').style.display = 'none';
-            }, 500);
-        }, 1500);
-    });
+    // Reveal animations
+    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-rotate');
+    
+    function checkReveal() {
+        revealElements.forEach(element => {
+            const elementTop = element.getBoundingClientRect().top;
+            const elementVisible = 150;
+            
+            if (elementTop < window.innerHeight - elementVisible) {
+                element.classList.add('active');
+            }
+        });
+    }
+    
+    window.addEventListener('scroll', checkReveal);
+    checkReveal(); // Check on page load
 });
 
-// Initialize Three.js scene
+
 function initThreeJS() {
     // Get the container element
     const container = document.getElementById('canvas-container');
