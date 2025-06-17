@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check if typing element exists
     if (typingElement) {
-        const words = ['Web Developer', 'UI/UX Designer', 'Problem Solver', 'Tech Enthusiast'];
+        const words = ['Full-Stack Developer', 'Web Developer', 'Problem Solver', 'Tech Enthusiast'];
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
