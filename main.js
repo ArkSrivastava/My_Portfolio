@@ -1,4 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Role selection logic
+    initRoleSelection();
+
     // Check if device is mobile or has touch capability
     const isMobile = window.innerWidth <= 768 || /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
     const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -7,12 +10,17 @@ document.addEventListener('DOMContentLoaded', function() {
     initThreeJS();
     
     // Loading screen
-    setTimeout(function() {
-        document.querySelector('.loading-screen').style.opacity = '0';
-        setTimeout(function() {
-            document.querySelector('.loading-screen').style.display = 'none';
-        }, 500);
-    }, 1500);
+    window.addEventListener('load', function() {
+        const loadingScreen = document.querySelector('.loading-screen');
+        if (loadingScreen) {
+            setTimeout(function() {
+                loadingScreen.style.opacity = '0';
+                setTimeout(function() {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 500); // Reduced delay
+        }
+    });
     
     // Initialize parallax effects
     initParallaxEffects();
@@ -139,11 +147,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // The implementation above with throttling is better for performance
     
     // Typing animation
-    const typingElement = document.querySelector('.typing-text');
+    let typingElement = document.querySelector('.typing-text');
     
     // Check if typing element exists
     if (typingElement) {
-        const words = ['Software Engineer', 'Full-Stack Developer', 'Problem Solver', 'Tech Enthusiast'];
+        const wordsByRole = {
+            'data-analyst': ['Data Analyst', 'SQL Expert', 'Power BI Specialist', 'Python Developer'],
+            'full-stack': ['Web Developer', 'React Specialist', 'Spring Boot Expert', 'Node.js Developer'],
+            'ai-ml': ['AI-ML Engineer', 'Python Developer', 'Deep Learning Enthusiast', 'Data Scientist']
+        };
+        
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -152,15 +165,20 @@ document.addEventListener('DOMContentLoaded', function() {
         
         function typeEffect() {
             try {
-                // Check if element still exists in DOM
-                if (!document.body.contains(typingElement)) {
-                    console.warn('Typing element no longer in DOM');
-                    if (typingTimeout) clearTimeout(typingTimeout);
+                // Only re-query if typingElement is lost or not yet found
+                if (!typingElement || !document.body.contains(typingElement)) {
+                    typingElement = document.querySelector('.typing-text');
+                }
+                
+                if (!typingElement) {
+                    typingTimeout = setTimeout(typeEffect, 500);
                     return;
                 }
                 
-                const currentWord = words[wordIndex];
-                
+                const currentRole = document.body.getAttribute('data-selected-role') || 'full-stack';
+                const words = wordsByRole[currentRole] || wordsByRole['full-stack'];
+                const currentWord = words[wordIndex % words.length];
+
                 if (isDeleting) {
                     typingElement.textContent = currentWord.substring(0, charIndex - 1);
                     charIndex--;
@@ -170,16 +188,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     charIndex++;
                     typingSpeed = 150;
                 }
-                
+
                 if (!isDeleting && charIndex === currentWord.length) {
                     isDeleting = true;
-                    typingSpeed = 1000; // Pause at end of word
+                    typingSpeed = 1500; // Pause at end of word
                 } else if (isDeleting && charIndex === 0) {
                     isDeleting = false;
-                    wordIndex = (wordIndex + 1) % words.length;
-                    typingSpeed = 500; // Pause before typing next word
+                    wordIndex++;
+                    typingSpeed = 500;
                 }
-                
+
                 typingTimeout = setTimeout(typeEffect, typingSpeed);
             } catch (error) {
                 console.error('Error in typing effect:', error);
@@ -272,34 +290,31 @@ function initThreeJS() {
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     camera.position.z = 5;
     
-    // Create a renderer with optimizations for mobile
+    // Create a renderer with optimizations
     const renderer = new THREE.WebGLRenderer({ 
-        antialias: !isMobile, // Disable antialiasing on mobile
+        antialias: false, // Always disable antialias for speed
         alpha: true,
-        powerPreference: 'low-power' // Optimize for battery life
+        powerPreference: 'high-performance' 
     });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(isMobile ? Math.min(1.5, window.devicePixelRatio) : window.devicePixelRatio); // Limit pixel ratio on mobile
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1 : 2)); 
     container.appendChild(renderer.domElement);
     
-    // Create particles - reduce count on mobile
+    // Create particles - significantly reduced count for performance
     const particlesGeometry = new THREE.BufferGeometry();
-    const particlesCount = isMobile ? 800 : 2000;
+    const particlesCount = isMobile ? 400 : 1200;
     
     const posArray = new Float32Array(particlesCount * 3);
     const colorsArray = new Float32Array(particlesCount * 3);
     
-    // Set random positions and colors for particles
     for (let i = 0; i < particlesCount * 3; i++) {
-        // Positions (x, y, z)
         posArray[i] = (Math.random() - 0.5) * 10;
         
-        // Colors (r, g, b)
-        if (i % 3 === 0) { // Red component
-            colorsArray[i] = 0.4 + Math.random() * 0.2; // Primary color (purple-ish)
-        } else if (i % 3 === 1) { // Green component
+        if (i % 3 === 0) { 
+            colorsArray[i] = 0.4 + Math.random() * 0.2; 
+        } else if (i % 3 === 1) { 
             colorsArray[i] = 0.2 + Math.random() * 0.2;
-        } else { // Blue component
+        } else { 
             colorsArray[i] = 0.8 + Math.random() * 0.2;
         }
     }
@@ -307,80 +322,50 @@ function initThreeJS() {
     particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
     particlesGeometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
     
-    // Material for particles - adjust size and opacity for mobile
     const particlesMaterial = new THREE.PointsMaterial({
-        size: isMobile ? 0.03 : 0.02, // Slightly larger on mobile for visibility
+        size: 0.015,
         vertexColors: true,
         transparent: true,
-        opacity: isMobile ? 0.6 : 0.8, // Reduce opacity on mobile
+        opacity: 0.6,
         sizeAttenuation: true
     });
     
-    // Create the particle system
     const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
     scene.add(particlesMesh);
     
-    // Add ambient light
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-    scene.add(ambientLight);
-    
-    // Mouse movement effect - use touch events for mobile
     let mouseX = 0;
     let mouseY = 0;
     
+    const handleMove = (x, y) => {
+        mouseX = (x / window.innerWidth) * 2 - 1;
+        mouseY = -(y / window.innerHeight) * 2 + 1;
+    };
+
     if (isMobile) {
-        // Touch events for mobile
-        document.addEventListener('touchmove', (event) => {
-            if (event.touches.length > 0) {
-                mouseX = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
-                mouseY = -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-            }
-        }, { passive: true }); // Add passive flag for better scroll performance
+        document.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) handleMove(e.touches[0].clientX, e.touches[0].clientY);
+        }, { passive: true });
     } else {
-        // Mouse events for desktop
-        document.addEventListener('mousemove', (event) => {
-            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-        });
+        document.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
     }
     
-    // Handle window resize
     window.addEventListener('resize', () => {
-        // Check if device became very small
-        if (window.innerWidth <= 375) {
-            container.style.display = 'none';
-            if (renderer) renderer.dispose();
-            return;
-        } else if (window.innerWidth > 375 && container.style.display === 'none') {
-            container.style.display = 'block';
-        }
-        
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(window.innerWidth, window.innerHeight);
     });
     
-    // Animation loop with performance optimization
-    let frameCount = 0;
     const animate = () => {
         requestAnimationFrame(animate);
         
-        // Skip frames on mobile for better performance
-        if (isMobile && frameCount % 2 !== 0) {
-            frameCount++;
-            return;
-        }
-        frameCount++;
+        // Slower, smoother rotation
+        particlesMesh.rotation.x += 0.0002;
+        particlesMesh.rotation.y += 0.0002;
         
-        // Rotate particles slowly - slower on mobile
-        particlesMesh.rotation.x += isMobile ? 0.0003 : 0.0005;
-        particlesMesh.rotation.y += isMobile ? 0.0003 : 0.0005;
+        // Subtle mouse influence
+        particlesMesh.rotation.x += mouseY * 0.0005;
+        particlesMesh.rotation.y += mouseX * 0.0005;
         
-        // Move particles based on mouse position - less responsive on mobile for better performance
-        particlesMesh.rotation.x += mouseY * (isMobile ? 0.0003 : 0.0005);
-        particlesMesh.rotation.y += mouseX * (isMobile ? 0.0003 : 0.0005);
-        
-        // Render the scene
         renderer.render(scene, camera);
     };
     
@@ -474,9 +459,10 @@ function initNavigation() {
     if (anchorLinks && anchorLinks.length > 0) {
         anchorLinks.forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
+                if (targetId === '#home') return; // Skip default behavior for Home
+                
+                e.preventDefault();
                 if (!targetId) return;
                 
                 const targetSection = document.querySelector(targetId);
@@ -642,11 +628,17 @@ function initProjectsFilter() {
                 const filterValue = btn.getAttribute('data-filter');
                 if (filterValue === null) return;
                 
+                const currentRole = document.body.getAttribute('data-role');
+                
                 // Filter projects
                 projectCards.forEach(card => {
                     if (!card) return;
                     
-                    if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                    const cardCategory = card.getAttribute('data-category');
+                    const matchesFilter = filterValue === 'all' || cardCategory === filterValue;
+                    const matchesRole = !currentRole || cardCategory === currentRole;
+
+                    if (matchesFilter && matchesRole) {
                         card.style.display = 'block';
                         setTimeout(() => {
                             card.style.opacity = '1';
@@ -911,4 +903,122 @@ function initScrollProgress() {
     
     // Initial update
     updateScrollProgress();
+}
+
+// Role selection initialization
+function initRoleSelection() {
+    const roleBtns = document.querySelectorAll('.role-btn');
+    const body = document.body;
+    const resumeBtn = document.getElementById('resumeDownloadBtn');
+    const heroSubtitle = document.getElementById('heroSubtitle');
+    const projectCards = document.querySelectorAll('.project-card');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const logo = document.querySelector('.logo');
+    const homeLink = document.querySelector('a[href="#home"]');
+    const changeRoleBtn = document.getElementById('changeRoleBtn');
+    
+    const roleData = {
+        'data-analyst': {
+            resume: 'resume_data_analyst.pdf',
+            title: 'Data Analyst',
+            subtitle: 'Computer Science Student & <span class="typing-text">Data Analyst</span>'
+        },
+        'full-stack': {
+            resume: 'resume_full_stack.pdf',
+            title: 'Web Developer',
+            subtitle: 'Computer Science Student & <span class="typing-text">Web Developer</span>'
+        },
+        'ai-ml': {
+            resume: 'resume_ai_ml.pdf',
+            title: 'AI-ML Engineer',
+            subtitle: 'Computer Science Student & <span class="typing-text">AI-ML Engineer</span>'
+        }
+    };
+
+    // Function to show/hide role-specific content
+    function updateRoleContent(role) {
+        document.querySelectorAll('.role-content').forEach(el => {
+            if (el.id.includes(role)) {
+                el.style.display = 'block';
+                // Add a small delay to trigger animations
+                setTimeout(() => el.classList.add('active'), 10);
+            } else {
+                el.style.display = 'none';
+                el.classList.remove('active');
+            }
+        });
+    }
+
+    // Function to return to role selection
+    function returnToSelection(e) {
+        if (e) e.preventDefault();
+        body.classList.add('role-selection-active');
+        // Reset role-specific attributes to allow theme reset if desired
+        // body.removeAttribute('data-role'); 
+        
+        // Reset URL
+        history.pushState("", document.title, window.location.pathname + window.location.search);
+        // Scroll to top of selection screen
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Add event listeners to Logo, Home link and Change Role button
+    if (logo) logo.addEventListener('click', returnToSelection);
+    if (homeLink) homeLink.addEventListener('click', returnToSelection);
+    if (changeRoleBtn) changeRoleBtn.addEventListener('click', returnToSelection);
+
+    roleBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const role = btn.getAttribute('data-role');
+            
+            // Set selected role attribute for typing effect and CSS themes
+            body.setAttribute('data-selected-role', role);
+            body.setAttribute('data-role', role);
+            
+            // Update role-specific text/skills content
+            updateRoleContent(role);
+            
+            // Update resume link and hero subtitle
+            if (roleData[role]) {
+                if (resumeBtn) resumeBtn.href = roleData[role].resume;
+                if (heroSubtitle) heroSubtitle.innerHTML = roleData[role].subtitle;
+            }
+
+            // Transition out of role selection
+            body.classList.remove('role-selection-active');
+
+            // Filter projects based on role
+            if (projectCards.length > 0) {
+                projectCards.forEach(card => {
+                    if (card.getAttribute('data-category') === role) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+
+                // Update project filter buttons
+                if (filterBtns.length > 0) {
+                    filterBtns.forEach(fBtn => {
+                        fBtn.classList.remove('active');
+                        if (fBtn.getAttribute('data-filter') === role) {
+                            fBtn.classList.add('active');
+                        }
+                    });
+                }
+            }
+            
+            // Re-trigger scroll reveal animations after transition
+            setTimeout(() => {
+                const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale, .reveal-rotate');
+                revealElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const elementVisible = 150;
+                    if (elementTop < window.innerHeight - elementVisible) {
+                        element.classList.add('active');
+                    }
+                });
+            }, 800);
+        });
+    });
 }
